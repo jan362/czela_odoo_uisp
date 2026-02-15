@@ -56,6 +56,15 @@ class UispDevice(models.Model):
     ip_address = fields.Char('IP Address')
     firmware = fields.Char('Firmware Version')
 
+    # Link to partner (via network device or direct)
+    partner_id = fields.Many2one(
+        'res.partner',
+        'Customer',
+        compute='_compute_partner_id',
+        store=True,
+        index=True
+    )
+
     # Metadata
     sync_date = fields.Datetime('Last Synced', default=fields.Datetime.now, readonly=True)
 
@@ -126,6 +135,34 @@ class UispDevice(models.Model):
                 return 's2_wifi'
 
         return None
+
+    @api.depends('network_device_id.partner_id')
+    def _compute_partner_id(self):
+        """Get partner from linked network device."""
+        for device in self:
+            if device.network_device_id and hasattr(device.network_device_id, 'partner_id'):
+                device.partner_id = device.network_device_id.partner_id
+            else:
+                device.partner_id = False
+
+    def _compute_network_device(self):
+        """Match UISP device to network.inventory.device by MAC."""
+        # Safety: Check if network.inventory module is installed
+        if 'network.inventory.device' not in self.env:
+            for device in self:
+                device.network_device_id = False
+            return
+
+        NetworkDevice = self.env['network.inventory.device']
+        for device in self:
+            if device.mac_address:
+                mac_norm = device.mac_address.upper().replace(':', '').replace('-', '')
+                net_dev = NetworkDevice.search([
+                    ('mac_address', 'ilike', mac_norm)
+                ], limit=1)
+                device.network_device_id = net_dev
+            else:
+                device.network_device_id = False
 
     def action_refresh_from_uisp(self):
         """Refresh device data from UISP (single device)."""

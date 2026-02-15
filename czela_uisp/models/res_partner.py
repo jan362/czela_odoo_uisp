@@ -16,10 +16,11 @@ class ResPartner(models.Model):
     @api.depends('id')
     def _compute_uisp_device_count(self):
         """Count UISP devices linked to this partner."""
+        UispDevice = self.env['uisp.device']
         for partner in self:
-            # Note: This assumes network.inventory.device exists with partner_id field
-            # If the module doesn't exist, this won't cause error, count will be 0
-            partner.uisp_device_count = 0
+            partner.uisp_device_count = UispDevice.search_count([
+                ('partner_id', '=', partner.id)
+            ])
 
     def action_view_uisp_devices(self):
         """Open UISP devices view filtered by this partner."""

@@ -10,7 +10,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'lib'))
 from uisp_client import UISPClient, UISPConfig
 
 
-class UispConfigHelper(models.AbstractModel):
+class UispConfigHelper(models.Model):
     """Helper model for UISP configuration and client creation."""
 
     _name = 'uisp.config.helper'

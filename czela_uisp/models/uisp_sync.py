@@ -53,7 +53,7 @@ class UispSync(models.TransientModel):
                     'platform': ident.get('platformId'),
                     'category': ident.get('category'),
                     'serial_number': ident.get('serialNumber'),
-                    'status': self._map_status(overview.get('status')),
+                    'status': UispSync._map_status(overview.get('status')),
                     'authorized': ident.get('authorized', False),
                     'cpu_percent': overview.get('cpu'),
                     'ram_percent': overview.get('ram'),
@@ -128,7 +128,8 @@ class UispSync(models.TransientModel):
             _logger.error(f'UISP site sync failed: {str(e)}')
             raise UserError(f'UISP site sync failed: {str(e)}')
 
-    def _map_status(self, uisp_status):
+    @staticmethod
+    def _map_status(uisp_status):
         """Map UISP status to Odoo selection."""
         status_map = {
             'active': 'active',
