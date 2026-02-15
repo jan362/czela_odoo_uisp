@@ -8,7 +8,9 @@
       "Bash(git add:*)",
       "Bash(git commit:*)",
       "Bash(ping:*)",
-      "Bash(powershell -Command \"Compress-Archive -Path czela_uisp -DestinationPath czela_uisp.zip -Force\":*)"
+      "Bash(powershell -Command \"Compress-Archive -Path czela_uisp -DestinationPath czela_uisp.zip -Force\":*)",
+      "Bash(del:*)",
+      "Bash(find:*)"
     ]
   }
 }

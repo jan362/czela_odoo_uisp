@@ -2,6 +2,10 @@
 
 Integrace mezi Odoo a UISP (Ubiquiti Network Management System) pro ISP operace.
 
+> **✅ Verze 1.0.0 - OPRAVENO** (2025-02-16)
+> Opraveny kritické bugy bránící instalaci. Modul nyní funguje na Odoo 16.0+.
+> Detaily viz [FIXES_APPLIED.md](FIXES_APPLIED.md)
+
 ## 📋 Popis
 
 Tento Odoo modul umožňuje:
