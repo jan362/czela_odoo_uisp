@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+
+        <!-- UISP Access Groups -->
+        <record id="group_uisp_user" model="res.groups">
+            <field name="name">UISP / User</field>
+            <field name="category_id" ref="base.module_category_operations"/>
+            <field name="comment">Can view UISP devices and sites</field>
+        </record>
+
+        <record id="group_uisp_manager" model="res.groups">
+            <field name="name">UISP / Manager</field>
+            <field name="category_id" ref="base.module_category_operations"/>
+            <field name="implied_ids" eval="[(4, ref('group_uisp_user'))]"/>
+            <field name="comment">Can manage UISP sync, configure settings</field>
+        </record>
+
+    </data>
+</odoo>

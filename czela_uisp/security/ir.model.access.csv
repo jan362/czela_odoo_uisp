@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_uisp_device_user,uisp.device user,model_uisp_device,group_uisp_user,1,0,0,0
+access_uisp_device_manager,uisp.device manager,model_uisp_device,group_uisp_manager,1,1,1,0
+access_uisp_site_user,uisp.site user,model_uisp_site,group_uisp_user,1,0,0,0
+access_uisp_site_manager,uisp.site manager,model_uisp_site,group_uisp_manager,1,1,1,0
+access_uisp_config_helper,uisp.config.helper,model_uisp_config_helper,group_uisp_user,1,0,0,0
+access_uisp_sync_manager,uisp.sync manager,model_uisp_sync,group_uisp_manager,1,1,1,1
