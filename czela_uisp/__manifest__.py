@@ -52,21 +52,17 @@ Set UISP connection parameters in Settings > Technical > Parameters > System Par
         'data/uisp_cron.xml',
 
         # Views
-        'views/uisp_menu.xml',
         'views/uisp_device_views.xml',
         'views/uisp_site_views.xml',
-        'views/uisp_config_views.xml',
         'views/partner_views.xml',
 
         # Wizards
         'wizards/uisp_sync_wizard_views.xml',
         'wizards/ctu_export_wizard_views.xml',
+
+        # Menu (last - depends on actions)
+        'views/uisp_menu.xml',
     ],
-    'assets': {
-        'web.assets_backend': [
-            'czela_uisp/static/src/js/uisp_map_widget.js',
-        ],
-    },
     'installable': True,
     'application': True,
     'auto_install': False,

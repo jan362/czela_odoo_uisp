@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- Root Menu -->
+        <menuitem id="menu_uisp_root"
+                  name="UISP"
+                  sequence="50"
+                  web_icon="czela_uisp,static/description/icon.png"
+                  groups="czela_uisp.group_uisp_user"/>
+
+        <!-- Devices Menu -->
+        <menuitem id="menu_uisp_devices"
+                  name="Devices"
+                  parent="menu_uisp_root"
+                  sequence="10"
+                  action="action_uisp_device_all"/>
+
+        <!-- Sites Menu -->
+        <menuitem id="menu_uisp_sites"
+                  name="Sites"
+                  parent="menu_uisp_root"
+                  sequence="20"
+                  action="action_uisp_site_all"/>
+
+        <!-- Configuration Menu -->
+        <menuitem id="menu_uisp_config"
+                  name="Configuration"
+                  parent="menu_uisp_root"
+                  sequence="90"
+                  groups="czela_uisp.group_uisp_manager"/>
+
+        <menuitem id="menu_uisp_sync"
+                  name="Synchronization"
+                  parent="menu_uisp_config"
+                  sequence="10"
+                  action="action_uisp_sync_wizard"/>
+
+        <!-- Reports Menu -->
+        <menuitem id="menu_uisp_reports"
+                  name="Reports"
+                  parent="menu_uisp_root"
+                  sequence="95"
+                  groups="czela_uisp.group_uisp_user"/>
+
+        <menuitem id="menu_ctu_export"
+                  name="ČTÚ ART252 Export"
+                  parent="menu_uisp_reports"
+                  sequence="10"
+                  action="action_ctu_export_wizard"/>
+
+    </data>
+</odoo>

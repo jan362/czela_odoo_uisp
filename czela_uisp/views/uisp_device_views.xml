@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- Device Tree View -->
+        <record id="view_uisp_device_tree" model="ir.ui.view">
+            <field name="name">uisp.device.tree</field>
+            <field name="model">uisp.device</field>
+            <field name="arch" type="xml">
+                <tree decoration-success="status=='active'"
+                      decoration-muted="status=='inactive'"
+                      decoration-danger="status=='disabled'">
+                    <field name="name"/>
+                    <field name="model"/>
+                    <field name="status"/>
+                    <field name="ctu_type"/>
+                    <field name="ip_address"/>
+                    <field name="signal_dbm"/>
+                    <field name="site_id"/>
+                    <field name="last_seen"/>
+                    <field name="sync_date"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Device Form View -->
+        <record id="view_uisp_device_form" model="ir.ui.view">
+            <field name="name">uisp.device.form</field>
+            <field name="model">uisp.device</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <button name="action_refresh_from_uisp"
+                                type="object"
+                                string="Refresh from UISP"
+                                class="btn-primary"
+                                groups="czela_uisp.group_uisp_manager"/>
+                        <field name="status" widget="statusbar"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" placeholder="Device Name"/>
+                            </h1>
+                            <h3>
+                                <field name="model" placeholder="Model"/>
+                            </h3>
+                        </div>
+
+                        <group>
+                            <group string="Identification">
+                                <field name="uisp_id"/>
+                                <field name="hostname"/>
+                                <field name="mac_address"/>
+                                <field name="serial_number"/>
+                                <field name="platform"/>
+                                <field name="category"/>
+                            </group>
+                            <group string="Classification">
+                                <field name="ctu_type"/>
+                                <field name="authorized"/>
+                                <field name="site_id"/>
+                            </group>
+                        </group>
+
+                        <group string="Network Information">
+                            <group>
+                                <field name="ip_address"/>
+                                <field name="firmware"/>
+                            </group>
+                        </group>
+
+                        <group string="Status &amp; Metrics">
+                            <group>
+                                <field name="last_seen"/>
+                                <field name="uptime"/>
+                                <field name="cpu_percent"/>
+                                <field name="ram_percent"/>
+                            </group>
+                            <group>
+                                <field name="signal_dbm"/>
+                                <field name="temperature"/>
+                            </group>
+                        </group>
+
+                        <group string="Location">
+                            <group>
+                                <field name="latitude"/>
+                                <field name="longitude"/>
+                            </group>
+                        </group>
+
+                        <group string="Synchronization">
+                            <field name="sync_date"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Device Kanban View -->
+        <record id="view_uisp_device_kanban" model="ir.ui.view">
+            <field name="name">uisp.device.kanban</field>
+            <field name="model">uisp.device</field>
+            <field name="arch" type="xml">
+                <kanban>
+                    <field name="name"/>
+                    <field name="model"/>
+                    <field name="status"/>
+                    <field name="signal_dbm"/>
+                    <field name="ctu_type"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div class="oe_kanban_global_click">
+                                <div class="o_kanban_record_top">
+                                    <div class="o_kanban_record_headings">
+                                        <strong class="o_kanban_record_title">
+                                            <field name="name"/>
+                                        </strong>
+                                        <br/>
+                                        <span class="text-muted">
+                                            <field name="model"/>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="o_kanban_record_body">
+                                    <field name="status" widget="label_selection"
+                                           options="{'classes': {'active': 'success', 'inactive': 'default', 'disabled': 'danger'}}"/>
+                                    <t t-if="record.ctu_type.raw_value">
+                                        <br/>
+                                        <span class="badge badge-info">
+                                            <field name="ctu_type"/>
+                                        </span>
+                                    </t>
+                                    <t t-if="record.signal_dbm.raw_value">
+                                        <br/>
+                                        <i class="fa fa-signal"/> Signal: <field name="signal_dbm"/> dBm
+                                    </t>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <!-- Device Search View -->
+        <record id="view_uisp_device_search" model="ir.ui.view">
+            <field name="name">uisp.device.search</field>
+            <field name="model">uisp.device</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="name"/>
+                    <field name="model"/>
+                    <field name="mac_address"/>
+                    <field name="ip_address"/>
+                    <field name="site_id"/>
+
+                    <filter name="filter_active" string="Active" domain="[('status', '=', 'active')]"/>
+                    <filter name="filter_inactive" string="Inactive" domain="[('status', '=', 'inactive')]"/>
+                    <filter name="filter_disabled" string="Disabled" domain="[('status', '=', 'disabled')]"/>
+
+                    <separator/>
+                    <filter name="filter_ftth" string="FTTH (Optika)" domain="[('ctu_type', '=', 's2_ftth')]"/>
+                    <filter name="filter_wifi" string="WiFi (Volné pásmo)" domain="[('ctu_type', '=', 's2_wifi')]"/>
+                    <filter name="filter_fwa" string="FWA (Licencované)" domain="[('ctu_type', '=', 's2_fwa')]"/>
+
+                    <separator/>
+                    <filter name="filter_authorized" string="Authorized" domain="[('authorized', '=', True)]"/>
+
+                    <group expand="0" string="Group By">
+                        <filter name="group_status" string="Status" context="{'group_by': 'status'}"/>
+                        <filter name="group_ctu_type" string="ČTÚ Type" context="{'group_by': 'ctu_type'}"/>
+                        <filter name="group_site" string="Site" context="{'group_by': 'site_id'}"/>
+                        <filter name="group_model" string="Model" context="{'group_by': 'model'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!-- Device Action -->
+        <record id="action_uisp_device_all" model="ir.actions.act_window">
+            <field name="name">UISP Devices</field>
+            <field name="res_model">uisp.device</field>
+            <field name="view_mode">tree,kanban,form</field>
+            <field name="search_view_id" ref="view_uisp_device_search"/>
+            <field name="context">{
+                'search_default_filter_active': 1,
+            }</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    No UISP devices found
+                </p>
+                <p>
+                    Click the "Synchronization" menu to sync devices from UISP.
+                </p>
+            </field>
+        </record>
+
+    </data>
+</odoo>

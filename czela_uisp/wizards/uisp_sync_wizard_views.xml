@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- Sync Wizard Form View -->
+        <record id="view_uisp_sync_wizard_form" model="ir.ui.view">
+            <field name="name">uisp.sync.wizard.form</field>
+            <field name="model">uisp.sync.wizard</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group states="draft">
+                        <p class="text-muted">
+                            This wizard will synchronize data from UISP to Odoo.
+                            Select what you want to sync and click "Start Sync".
+                        </p>
+                    </group>
+
+                    <group states="draft">
+                        <field name="sync_devices"/>
+                        <field name="sync_sites"/>
+                    </group>
+
+                    <group states="done">
+                        <field name="result_message" nolabel="1"/>
+                    </group>
+
+                    <field name="state" invisible="1"/>
+
+                    <footer>
+                        <button name="action_sync"
+                                string="Start Sync"
+                                type="object"
+                                class="btn-primary"
+                                states="draft"/>
+                        <button name="action_view_devices"
+                                string="View Devices"
+                                type="object"
+                                class="btn-primary"
+                                states="done"/>
+                        <button name="action_close"
+                                string="Close"
+                                type="object"
+                                class="btn-secondary"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <!-- Sync Wizard Action -->
+        <record id="action_uisp_sync_wizard" model="ir.actions.act_window">
+            <field name="name">UISP Synchronization</field>
+            <field name="res_model">uisp.sync.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+    </data>
+</odoo>

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- Site Tree View -->
+        <record id="view_uisp_site_tree" model="ir.ui.view">
+            <field name="name">uisp.site.tree</field>
+            <field name="model">uisp.site</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="device_count"/>
+                    <field name="latitude"/>
+                    <field name="longitude"/>
+                    <field name="sync_date"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Site Form View -->
+        <record id="view_uisp_site_form" model="ir.ui.view">
+            <field name="name">uisp.site.form</field>
+            <field name="model">uisp.site</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" placeholder="Site Name"/>
+                            </h1>
+                        </div>
+
+                        <group>
+                            <group string="Hierarchy">
+                                <field name="uisp_id"/>
+                                <field name="parent_id"/>
+                            </group>
+                            <group string="Statistics">
+                                <field name="device_count"/>
+                                <field name="sync_date"/>
+                            </group>
+                        </group>
+
+                        <group string="Location">
+                            <group>
+                                <field name="latitude"/>
+                                <field name="longitude"/>
+                            </group>
+                        </group>
+
+                        <notebook>
+                            <page string="Devices" name="devices">
+                                <field name="device_ids">
+                                    <tree>
+                                        <field name="name"/>
+                                        <field name="model"/>
+                                        <field name="status"/>
+                                        <field name="ip_address"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Site Search View -->
+        <record id="view_uisp_site_search" model="ir.ui.view">
+            <field name="name">uisp.site.search</field>
+            <field name="model">uisp.site</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="name"/>
+                    <field name="parent_id"/>
+
+                    <group expand="0" string="Group By">
+                        <filter name="group_parent" string="Parent Site" context="{'group_by': 'parent_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!-- Site Action -->
+        <record id="action_uisp_site_all" model="ir.actions.act_window">
+            <field name="name">UISP Sites</field>
+            <field name="res_model">uisp.site</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="view_uisp_site_search"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    No UISP sites found
+                </p>
+                <p>
+                    Click the "Synchronization" menu to sync sites from UISP.
+                </p>
+            </field>
+        </record>
+
+    </data>
+</odoo>

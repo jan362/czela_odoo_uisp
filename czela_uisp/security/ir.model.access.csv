@@ -5,3 +5,5 @@ access_uisp_site_user,uisp.site user,model_uisp_site,group_uisp_user,1,0,0,0
 access_uisp_site_manager,uisp.site manager,model_uisp_site,group_uisp_manager,1,1,1,0
 access_uisp_config_helper,uisp.config.helper,model_uisp_config_helper,group_uisp_user,1,0,0,0
 access_uisp_sync_manager,uisp.sync manager,model_uisp_sync,group_uisp_manager,1,1,1,1
+access_uisp_sync_wizard_user,uisp.sync.wizard user,model_uisp_sync_wizard,group_uisp_user,1,1,1,1
+access_ctu_export_wizard_user,ctu.export.wizard user,model_ctu_export_wizard,group_uisp_user,1,1,1,1
