@@ -1,13 +1,23 @@
 # 🚀 Quick Start - CZELA UISP Integration pro Odoo 18
 
+⚠️ **DŮLEŽITÉ:** Odoo 18 neumožňuje upload Python modulů přes UI. Použijte manuální instalaci.
+
 ## Rychlá instalace (3 kroky)
 
-### 1️⃣ Upload modulu do Odoo
+### 1️⃣ Instalace modulu (manuálně)
 
-1. Přihlaste se do Odoo jako **admin**
-2. **Apps** → **⋮** → **Upload Module**
-3. Nahrajte `czela_uisp_odoo18.zip`
-4. Klikněte **Install** u "CZELA UISP Integration"
+```bash
+# Rozbalte ZIP
+unzip czela_uisp_odoo18_complete.zip
+
+# Zkopírujte do Odoo addons
+sudo cp -r czela_uisp /opt/odoo/custom/addons/
+
+# Restartujte Odoo
+sudo systemctl restart odoo
+
+# V Odoo UI: Apps → Update Apps List → Install "CZELA UISP Integration"
+```
 
 ### 2️⃣ Konfigurace UISP připojení
 

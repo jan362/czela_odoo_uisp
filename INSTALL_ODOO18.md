@@ -14,30 +14,64 @@
 pip install requests urllib3
 ```
 
-### Krok 2: Instalace modulu přes Odoo UI (Doporučeno)
+### Krok 2: Instalace modulu (Manuálně přes file system)
 
-1. **Přihlaste se** do Odoo jako administrátor
-2. Přejděte na **Apps** (Aplikace)
-3. Klikněte na **⋮** (tři tečky) → **Upload Module**
-4. Nahrajte soubor `czela_uisp_odoo18.zip`
-5. Klikněte na **Upload**
-6. Najděte modul "CZELA UISP Integration" v seznamu
-7. Klikněte na **Install**
+⚠️ **DŮLEŽITÉ:** Odoo 18 neumožňuje upload Python modulů přes UI.
+Musíte použít manuální instalaci přes file system.
 
-### Alternativa: Manuální instalace
+#### Metoda A: Linux/Unix
 
 ```bash
-# 1. Zkopírujte modul do addons adresáře
-cp -r czela_uisp /path/to/odoo/addons/
+# 1. Rozbalte ZIP balíček
+unzip czela_uisp_odoo18_complete.zip
 
-# 2. Restartujte Odoo server
+# 2. Zkopírujte modul do Odoo addons adresáře
+sudo cp -r czela_uisp /usr/lib/python3/dist-packages/odoo/addons/
+# NEBO do custom addons (podle vaší konfigurace)
+sudo cp -r czela_uisp /opt/odoo/custom/addons/
+
+# 3. Nastavte správná oprávnění
+sudo chown -R odoo:odoo /opt/odoo/custom/addons/czela_uisp
+
+# 4. Restartujte Odoo server
 sudo systemctl restart odoo
 
-# 3. Aktualizujte seznam modulů
-# V Odoo UI: Apps → Update Apps List
+# 5. V Odoo UI: Apps → Update Apps List (Aktualizovat seznam aplikací)
+# 6. Vyhledejte "CZELA UISP Integration" a klikněte Install
+```
 
-# 4. Instalujte modul
-# V Odoo UI: Apps → Search "CZELA UISP" → Install
+#### Metoda B: Windows
+
+```powershell
+# 1. Rozbalte czela_uisp_odoo18_complete.zip
+
+# 2. Zkopírujte složku czela_uisp do Odoo addons
+# Cesta je obvykle: C:\Program Files\Odoo 18\server\odoo\addons\
+# NEBO: C:\odoo\custom\addons\
+
+Copy-Item -Path "czela_uisp" -Destination "C:\Program Files\Odoo 18\server\odoo\addons\" -Recurse
+
+# 3. Restartujte Odoo službu
+Restart-Service -Name "odoo-server-18.0"
+
+# 4. V Odoo UI: Apps → Update Apps List
+# 5. Instalujte modul "CZELA UISP Integration"
+```
+
+#### Metoda C: Docker
+
+```bash
+# 1. Rozbalte ZIP
+unzip czela_uisp_odoo18_complete.zip
+
+# 2. Zkopírujte do custom addons volume
+docker cp czela_uisp odoo:/mnt/extra-addons/
+
+# 3. Restartujte container
+docker restart odoo
+
+# 4. V Odoo UI: Apps → Update Apps List
+# 5. Instalujte modul
 ```
 
 ---

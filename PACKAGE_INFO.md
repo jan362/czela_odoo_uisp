@@ -42,16 +42,10 @@
 
 ## 🚀 Rychlá instalace
 
-### Varianta A: Upload přes UI (Nejjednodušší)
+⚠️ **DŮLEŽITÉ:** Odoo 18 neumožňuje upload Python modulů přes UI.
+Musíte použít manuální instalaci přes file system.
 
-```
-1. Stáhněte: czela_uisp_odoo18.zip
-2. Odoo UI → Apps → Upload Module
-3. Nahrajte ZIP soubor
-4. Install
-```
-
-### Varianta B: Manuální instalace
+### Manuální instalace (jediná metoda pro Odoo 18)
 
 ```bash
 # 1. Stáhněte a rozbalte complete balíček
