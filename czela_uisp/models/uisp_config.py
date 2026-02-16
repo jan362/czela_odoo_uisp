@@ -1,13 +1,8 @@
 # -*- coding: utf-8 -*-
 
 from odoo import api, models
-import sys
-import os
 
-# Add lib directory to Python path for UISP client import
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'lib'))
-
-from uisp_client import UISPClient, UISPConfig
+from ..lib.uisp_client import UISPClient, UISPConfig
 
 
 class UispConfigHelper(models.Model):
