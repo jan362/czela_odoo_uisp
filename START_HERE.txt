@@ -1,0 +1,117 @@
+╔════════════════════════════════════════════════════════════════════════════╗
+║                    CZELA UISP Integration pro Odoo 18                      ║
+║                           Verze: 18.0.1.0.0                                ║
+╚════════════════════════════════════════════════════════════════════════════╝
+
+⚠️ DŮLEŽITÉ UPOZORNĚNÍ ⚠️
+
+Odoo 18 NEUMOŽŇUJE upload Python modulů přes webové rozhraní!
+Chybová hláška: "Můžete importovat pouze datové moduly (XML a statické prostředky)"
+
+→ MUSÍTE použít manuální instalaci přes file system (viz níže)
+
+═══════════════════════════════════════════════════════════════════════════
+
+📦 RYCHLÁ INSTALACE (Linux)
+
+1. Rozbalte tento ZIP balíček
+
+2. Zkopírujte modul do Odoo addons:
+   sudo cp -r czela_uisp /data/is-dev-czela-net/developer-addons/
+
+3. Nastavte oprávnění:
+   sudo chown -R odoo:odoo /data/is-dev-czela-net/developer-addons/czela_uisp
+
+4. Instalujte závislosti:
+   sudo pip3 install requests urllib3
+
+5. Restartujte Odoo:
+   sudo systemctl restart odoo
+
+6. V Odoo UI:
+   Apps → Update Apps List → Najděte "CZELA UISP Integration" → Install
+
+═══════════════════════════════════════════════════════════════════════════
+
+📦 RYCHLÁ INSTALACE (Windows)
+
+1. Rozbalte tento ZIP balíček
+
+2. Zkopírujte složku "czela_uisp" do:
+   C:\Program Files\Odoo 18\server\odoo\addons\
+
+3. Instalujte závislosti (PowerShell jako Admin):
+   cd "C:\Program Files\Odoo 18\python"
+   .\python.exe -m pip install requests urllib3
+
+4. Restartujte Odoo službu:
+   Services → "odoo-server-18.0" → Restart
+
+5. V Odoo UI:
+   Apps → Update Apps List → Install "CZELA UISP Integration"
+
+═══════════════════════════════════════════════════════════════════════════
+
+📦 RYCHLÁ INSTALACE (Docker)
+
+1. Zkopírujte modul do containeru:
+   docker cp czela_uisp odoo:/mnt/extra-addons/
+
+2. Instalujte závislosti:
+   docker exec -it odoo pip install requests urllib3
+
+3. Restartujte:
+   docker restart odoo
+
+4. V Odoo UI: Apps → Update Apps List → Install
+
+═══════════════════════════════════════════════════════════════════════════
+
+📚 DOKUMENTACE
+
+QUICK_START.md              - Rychlý návod (3 kroky)
+INSTALLATION_METHODS.md     - Detailní instalace pro všechny platformy
+INSTALL_ODOO18.md          - Kompletní instalační návod + troubleshooting
+README.md                   - Úplná dokumentace modulu
+ODOO18_COMPATIBILITY.md    - Technické detaily kompatibility
+PACKAGE_INFO.md            - Informace o balíčcích
+
+═══════════════════════════════════════════════════════════════════════════
+
+⚙️ KONFIGURACE PO INSTALACI
+
+V Odoo: Settings → Technical → System Parameters
+
+Nastavte tyto 3 parametry:
+
+  uisp.base_url    = https://10.93.9.8 (vaše UISP URL)
+  uisp.api_key     = your-api-key-here
+  uisp.verify_ssl  = false (pro self-signed certifikáty)
+
+Pak: UISP → Synchronization → Sync Now
+
+═══════════════════════════════════════════════════════════════════════════
+
+🎯 KLÍČOVÉ FUNKCE
+
+✓ Automatická synchronizace devices (15 min) a sites (1 hod)
+✓ ČTÚ klasifikace technologií (FTTH/WiFi/FWA)
+✓ GPS mapové zobrazení zařízení
+✓ Propojení se zákazníky (res.partner)
+✓ ČTÚ ART252 export pro reporting
+✓ Real-time metriky (CPU, RAM, signal strength)
+
+═══════════════════════════════════════════════════════════════════════════
+
+📞 PODPORA
+
+GitHub: https://github.com/jan362/czela_odoo_uisp
+Issues: https://github.com/jan362/czela_odoo_uisp/issues
+
+═══════════════════════════════════════════════════════════════════════════
+
+Licence: LGPL-3
+Autor: CZELA
+Datum vydání: 2025-02-16
+
+═══════════════════════════════════════════════════════════════════════════

@@ -26,7 +26,7 @@ class UispSite(models.Model):
     device_count = fields.Integer('Device Count', compute='_compute_device_count', store=True)
 
     # Metadata
-    sync_date = fields.Datetime('Last Synced', default=fields.Datetime.now)
+    sync_date = fields.Datetime('Last Synced', default=lambda self: fields.Datetime.now())
 
     @api.depends('device_ids')
     def _compute_device_count(self):

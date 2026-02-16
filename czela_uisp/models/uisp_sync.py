@@ -77,7 +77,7 @@ class UispSync(models.TransientModel):
                     new_device = UispDevice.create(vals)
                     synced_ids.append(new_device.id)
 
-            _logger.info(f'UISP device sync completed. Synced {len(synced_ids)} devices.')
+            _logger.info('UISP device sync completed. Synced %d devices.', len(synced_ids))
 
             return {
                 'synced_count': len(synced_ids),
@@ -85,7 +85,7 @@ class UispSync(models.TransientModel):
             }
 
         except Exception as e:
-            _logger.error(f'UISP device sync failed: {str(e)}')
+            _logger.error('UISP device sync failed: %s', str(e))
             raise UserError(f'UISP sync failed: {str(e)}')
 
     @api.model
@@ -120,12 +120,12 @@ class UispSync(models.TransientModel):
 
                 synced_count += 1
 
-            _logger.info(f'UISP site sync completed. Synced {synced_count} sites.')
+            _logger.info('UISP site sync completed. Synced %d sites.', synced_count)
 
             return {'synced_count': synced_count}
 
         except Exception as e:
-            _logger.error(f'UISP site sync failed: {str(e)}')
+            _logger.error('UISP site sync failed: %s', str(e))
             raise UserError(f'UISP site sync failed: {str(e)}')
 
     @staticmethod

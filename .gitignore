@@ -136,3 +136,10 @@ sessions/
 # OS specific
 .DS_Store
 Thumbs.db
+
+# Claude Code IDE
+.claude/
+
+# Build artifacts
+*.zip
+czela_uisp_odoo18*.zip

@@ -2,8 +2,8 @@
 
 Integrace mezi Odoo a UISP (Ubiquiti Network Management System) pro ISP operace.
 
-> **✅ Verze 1.0.0 - OPRAVENO** (2025-02-16)
-> Opraveny kritické bugy bránící instalaci. Modul nyní funguje na Odoo 16.0+.
+> **✅ Verze 18.0.1.0.0** (2025-02-16)
+> Optimalizováno pro Odoo 18.0-20251021 s opravami kompatibility a best practices.
 > Detaily viz [FIXES_APPLIED.md](FIXES_APPLIED.md)
 
 ## 📋 Popis
@@ -39,7 +39,10 @@ Tento Odoo modul umožňuje:
 
 ### Požadavky
 
-**Odoo verze:** 14.0+
+**Odoo verze:** 18.0+ (optimalizováno pro 18.0-20251021)
+
+**Odoo moduly:**
+- `network_inventory` - Povinný modul pro propojení UISP zařízení se zákazníky
 
 **Python závislosti:**
 ```bash
@@ -282,6 +285,14 @@ class UispDevice(models.Model):
    ```
 
 ## 📝 Changelog
+
+### Version 18.0.1.0.0 (2025-02-16)
+- 🚀 Optimalizováno pro Odoo 18.0-20251021
+- ✅ Opraveno chybějící pole network_device_id
+- ✅ Modernizace fields.Datetime.now → lambda výrazy
+- ✅ Relativní importy místo sys.path manipulace
+- ✅ Lazy evaluation v loggingu pro lepší performance
+- ✅ Aktualizovaná verze manifestu na 18.0 formát
 
 ### Version 1.0.0 (2025-02-16)
 - ✨ Iniciální release

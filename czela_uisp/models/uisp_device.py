@@ -56,6 +56,15 @@ class UispDevice(models.Model):
     ip_address = fields.Char('IP Address')
     firmware = fields.Char('Firmware Version')
 
+    # Link to network inventory device
+    network_device_id = fields.Many2one(
+        'network.inventory.device',
+        'Network Device',
+        compute='_compute_network_device',
+        store=True,
+        index=True
+    )
+
     # Link to partner (via network device or direct)
     partner_id = fields.Many2one(
         'res.partner',
@@ -66,7 +75,7 @@ class UispDevice(models.Model):
     )
 
     # Metadata
-    sync_date = fields.Datetime('Last Synced', default=fields.Datetime.now, readonly=True)
+    sync_date = fields.Datetime('Last Synced', default=lambda self: fields.Datetime.now(), readonly=True)
 
     @api.depends('model', 'category')
     def _compute_ctu_type(self):
@@ -145,14 +154,9 @@ class UispDevice(models.Model):
             else:
                 device.partner_id = False
 
+    @api.depends('mac_address')
     def _compute_network_device(self):
         """Match UISP device to network.inventory.device by MAC."""
-        # Safety: Check if network.inventory module is installed
-        if 'network.inventory.device' not in self.env:
-            for device in self:
-                device.network_device_id = False
-            return
-
         NetworkDevice = self.env['network.inventory.device']
         for device in self:
             if device.mac_address:
