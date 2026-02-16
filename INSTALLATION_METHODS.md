@@ -23,6 +23,11 @@ Chybová hláška: *"Můžete importovat pouze datové moduly (soubory XML a sta
 
 ## Metoda 1: Linux Server (Standardní instalace)
 
+> **📌 NOTE pro is-dev.czela.net:**
+> Na serveru is-dev.czela.net použijte cestu:
+> `/data/is-dev-czela-net/developer-addons`
+> místo `/opt/odoo/custom/addons`
+
 ### Krok za krokem
 
 ```bash

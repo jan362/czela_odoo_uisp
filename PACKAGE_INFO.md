@@ -47,6 +47,8 @@ Musíte použít manuální instalaci přes file system.
 
 ### Manuální instalace (jediná metoda pro Odoo 18)
 
+> **💡 TIP:** Pro is-dev.czela.net použijte `/data/is-dev-czela-net/developer-addons`
+
 ```bash
 # 1. Stáhněte a rozbalte complete balíček
 unzip czela_uisp_odoo18_complete.zip

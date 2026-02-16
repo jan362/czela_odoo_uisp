@@ -6,6 +6,8 @@
 
 ### 1️⃣ Instalace modulu (manuálně)
 
+> **💡 TIP:** Pro is-dev.czela.net použijte `/data/is-dev-czela-net/developer-addons`
+
 ```bash
 # Rozbalte ZIP
 unzip czela_uisp_odoo18_complete.zip

@@ -1,254 +1,238 @@
-# Nasazení modulu na is-dev.czela.net
+# 🚀 Deployment na is-dev.czela.net
 
-## 📦 Instalace přes Odoo Web Interface
+## Metoda 1: Manualni instalace pres SSH (Doporuceno)
 
-### Krok 1: Příprava modulu
+### Pozadavky
 
-✅ **Hotovo** - Modul je zabalen jako `czela_uisp.zip`
+- SSH pristup na is-dev.czela.net
+- Uzivatelske ucto s sudo opravnenimi
 
-Umístění: `H:\Sdílené disky\jsemit-EXT\_code\czela_odoo_uisp\czela_uisp.zip`
+### Krok za krokem
 
-### Krok 2: Přihlášení do Odoo
+```bash
+# 1. Pripojte se na server
+ssh your_username@is-dev.czela.net
 
-1. Otevřete prohlížeč a přejděte na: **https://is-dev.czela.net**
-2. Přihlaste se jako **administrátor** (uživatel s právy "Settings")
+# 2. Presunete se do /tmp
+cd /tmp
 
-### Krok 3: Aktivace Developer Mode
+# 3. Nahrajte ZIP soubor (pres SCP/WinSCP)
+# Z lokalniho PC:
+scp czela_uisp_odoo18_complete.zip your_username@is-dev.czela.net:/tmp/
 
-1. V Odoo přejděte na **Settings** (Nastavení)
-2. Scroll dolů na **Developer Tools**
-3. Klikněte na **Activate the developer mode**
+# 4. Rozbalte ZIP
+cd /tmp
+unzip czela_uisp_odoo18_complete.zip
 
-   Případně přidejte `?debug=1` do URL:
-   ```
-   https://is-dev.czela.net/web?debug=1
-   ```
+# 5. Vytvorte zalohu (pokud modul uz existuje)
+sudo cp -r /data/is-dev-czela-net/developer-addons/czela_uisp \
+     /data/is-dev-czela-net/developer-addons/czela_uisp_backup_$(date +%Y%m%d_%H%M%S)
 
-### Krok 4: Upload modulu
+# 6. Smazte stary modul
+sudo rm -rf /data/is-dev-czela-net/developer-addons/czela_uisp
 
-**Metoda A: Přes Apps menu (doporučeno pro Odoo 16+)**
+# 7. Zkopiruejte novy modul
+sudo cp -r czela_uisp /data/is-dev-czela-net/developer-addons/
 
-1. Přejděte na **Apps** (Aplikace)
-2. V pravém horním rohu klikněte na **⚙️ ikonu** nebo tři tečky
-3. Vyberte **Upload module** nebo **Import module**
-4. Vyberte soubor `czela_uisp.zip`
-5. Klikněte na **Import**
+# 8. Nastavte spravna opravneni
+sudo chown -R odoo:odoo /data/is-dev-czela-net/developer-addons/czela_uisp
+sudo chmod -R 755 /data/is-dev-czela-net/developer-addons/czela_uisp
 
-**Metoda B: Ruční nahrání na server (pokud A nefunguje)**
+# 9. Instalujte Python zavislosti
+sudo pip3 install requests urllib3
 
-Pokud web interface neumožňuje upload, budete potřebovat:
-- SSH/SFTP přístup, nebo
-- Požádat server administrátora o nahrání modulu do `/opt/odoo/addons/`
+# 10. Restartujte Odoo
+sudo systemctl restart odoo
 
-### Krok 5: Update Apps List
+# 11. Zkontrolujte status
+sudo systemctl status odoo
 
-1. V **Apps** menu klikněte na **Update Apps List** (Aktualizovat seznam aplikací)
-2. Potvrďte akci
-3. Počkejte na dokončení (může trvat několik sekund)
-
-### Krok 6: Instalace modulu
-
-1. V Apps vyhledejte "**CZELA UISP**" nebo "**uisp**"
-2. Měli byste vidět modul s názvem "CZELA UISP Integration"
-3. Klikněte na **Install** (Instalovat)
-4. Počkejte na dokončení instalace
-
-⚠️ **Poznámka:** Instalace může zobrazit chybu, pokud chybí závislosti (viz níže).
-
-### Krok 7: Konfigurace UISP připojení
-
-1. Přejděte na **Settings → Technical → Parameters → System Parameters**
-2. Klikněte na **Create** (Vytvořit)
-3. Přidejte následující parametry:
-
-| Key | Value | Příklad |
-|-----|-------|---------|
-| `uisp.base_url` | `https://10.93.9.8` | URL vašeho UISP serveru |
-| `uisp.api_key` | `your-api-key` | API klíč z UISP |
-| `uisp.verify_ssl` | `false` | Pro self-signed certifikáty |
-
-**Získání UISP API klíče:**
-1. Přihlaste se do UISP (https://10.93.9.8)
-2. Settings → Users → [váš user]
-3. API Keys → Generate New Key
-4. Zkopírujte klíč
-
-### Krok 8: První synchronizace
-
-1. V Odoo přejděte na **UISP → Synchronization → Sync Now**
-   - ⚠️ **Poznámka:** Pokud menu UISP není vidět, views nejsou implementovány (viz níže)
-
-2. Pokud views nejsou hotové, můžete syncnout přes Python:
-   ```python
-   # V Odoo shell nebo přes Technical → Execute Code (developer mode)
-   env['uisp.sync'].sync_devices()
-   env['uisp.sync'].sync_sites()
-   ```
-
-### Krok 9: Aktivace automatické synchronizace
-
-1. **Settings → Technical → Automation → Scheduled Actions**
-2. Najděte:
-   - **UISP: Sync Devices**
-   - **UISP: Sync Sites**
-3. Pro každou akci:
-   - Otevřete detail
-   - Zaškrtněte **Active**
-   - Uložte
+# 12. Sledujte logy
+sudo tail -f /var/log/odoo/odoo-server.log
+```
 
 ---
 
-## ⚠️ Známé problémy a řešení
+## Metoda 2: Deployment pres WinSCP + SSH
 
-### ❌ Chyba při instalaci: "Module czela_uisp depends on..."
+### 1. Nahrani souboru pres WinSCP
 
-**Příčina:** Modul vyžaduje závislosti, které nejsou nainstalované.
-
-**Řešení:**
-
-V `__manifest__.py` je zatím minimal dependencies:
-```python
-'depends': [
-    'base',
-    'contacts',
-],
+```
+1. Otevrete WinSCP
+2. Pripojte se na is-dev.czela.net
+3. Nahrajte czelauisp / do /tmp/
 ```
 
-Pokud používáte **network.inventory.device** model, přidejte příslušný modul do `depends`.
+### 2. Instalace pres SSH
 
-### ❌ ImportError: No module named 'requests'
+Pouzijte prikazy z Metody 1, krok 5-12.
 
-**Příčina:** Python balíček `requests` není nainstalován na serveru.
+---
 
-**Řešení (vyžaduje SSH přístup):**
+## Po Deploymentu - Aktivace v Odoo
+
+### 1. Prihlaste se do Odoo
+
+```
+https://is-dev.czela.net
+Username: admin
+Password: ***
+```
+
+### 2. Aktualizujte seznam aplikaci
+
+```
+Apps → ⋮ (tri tecky vpravo nahore) → Update Apps List
+```
+
+### 3. Nainstalujte modul
+
+```
+Apps → Vyhledejte "CZELA UISP" → Install
+```
+
+### 4. Nakonfigurujte UISP pripojeni
+
+```
+Settings → Technical → System Parameters
+
+Pridejte tyto parametry:
+
+Key: uisp.base_url
+Value: https://10.93.9.8
+
+Key: uisp.api_key
+Value: your-api-key-here
+
+Key: uisp.verify_ssl
+Value: false
+```
+
+### 5. Spustte prvni synchronizaci
+
+```
+UISP → Synchronization → Sync Now
+```
+
+### 6. Aktivujte automatickou synchronizaci
+
+```
+Settings → Technical → Automation → Scheduled Actions
+
+Aktivujte:
+- "UISP: Sync Devices" (kazdych 15 min)
+- "UISP: Sync Sites" (kazdou hodinu)
+```
+
+---
+
+## Reseni problemu
+
+### Modul neni videt v Apps
+
 ```bash
-# SSH na server
-ssh user@is-dev.czela.net
+# Zkontrolujte addons_path
+ssh your_username@is-dev.czela.net
+sudo cat /etc/odoo/odoo.conf | grep addons_path
 
-# Aktivovat Odoo virtualenv (zjistit cestu od admina)
-source /opt/odoo/venv/bin/activate
+# Melo by obsahovat: /data/is-dev-czela-net/developer-addons
 
-# Instalovat requests
-pip install requests urllib3
+# Pokud ne, pridejte:
+sudo nano /etc/odoo/odoo.conf
 
-# Restartovat Odoo
+# Pridejte do addons_path:
+# addons_path = /usr/lib/python3/dist-packages/odoo/addons,/data/is-dev-czela-net/developer-addons
+
+# Restartujte
 sudo systemctl restart odoo
 ```
 
-**Alternativa (bez SSH):** Požádejte server administrátora.
+### Permission denied
 
-### ❌ Menu "UISP" se nezobrazuje
-
-**Příčina:** XML views nejsou implementovány (viz TODO.md).
-
-**Řešení:**
-
-1. **Krátkodobě:** Použijte Python shell pro sync:
-   ```python
-   env['uisp.sync'].sync_devices()
-   ```
-
-2. **Dlouhodobě:** Implementujte XML views:
-   - `views/uisp_menu.xml`
-   - `views/uisp_device_views.xml`
-   - atd.
-
-### ❌ SSL Certificate Verify Failed
-
-**Příčina:** UISP používá self-signed certifikát.
-
-**Řešení:** Nastavte `uisp.verify_ssl = false` v System Parameters.
-
----
-
-## 🧪 Testování instalace
-
-### Test 1: Ověření modulu v databázi
-
-```python
-# Technical → Execute Code (developer mode)
-module = env['ir.module.module'].search([('name', '=', 'czela_uisp')])
-print(f"Module state: {module.state}")
-# Očekáváno: 'installed'
+```bash
+# Opravte opravneni
+sudo chown -R odoo:odoo /data/is-dev-czela-net/developer-addons/czela_uisp
+sudo chmod -R 755 /data/is-dev-czela-net/developer-addons/czela_uisp
 ```
 
-### Test 2: Test UISP připojení
+### ModuleNotFoundError: requests
 
-```python
-# Execute Code
-result = env['uisp.config.helper'].test_connection()
-print(result)
-# Očekáváno: {'status': 'success', 'message': '...', 'site_count': X}
+```bash
+# Instalujte Python zavislosti
+sudo pip3 install requests urllib3
 ```
 
-### Test 3: Manuální sync
+### Odoo se nespusti po deploymentu
 
-```python
-# Execute Code
-result = env['uisp.sync'].sync_devices()
-print(f"Synced {result['synced_count']} devices")
-```
+```bash
+# Zkontrolujte logy
+sudo tail -f /var/log/odoo/odoo-server.log
 
-### Test 4: Zobrazení dat
-
-```python
-# Execute Code
-devices = env['uisp.device'].search([])
-print(f"Total devices: {len(devices)}")
-
-for device in devices[:5]:
-    print(f"- {device.name} ({device.model}) - {device.status}")
+# Rollback na zalohu
+sudo rm -rf /data/is-dev-czela-net/developer-addons/czela_uisp
+sudo mv /data/is-dev-czela-net/developer-addons/czela_uisp_backup_* \
+     /data/is-dev-czela-net/developer-addons/czela_uisp
+sudo systemctl restart odoo
 ```
 
 ---
 
-## 📋 Checklist před nasazením
+## Rollback
 
-- [ ] ZIP balíček vytvořen (`czela_uisp.zip`)
-- [ ] Přihlášen do Odoo jako admin
-- [ ] Developer mode aktivován
-- [ ] Modul nahrán přes Apps → Upload module
-- [ ] Apps list aktualizován
-- [ ] Modul nainstalován
-- [ ] System Parameters nastaveny (base_url, api_key)
-- [ ] Test connection úspěšný
-- [ ] První sync devices + sites proběhl
-- [ ] Cron jobs aktivovány
-- [ ] Data zobrazena v Odoo (nebo přes Python shell)
+### Vraceni na predchozi verzi
 
----
+```bash
+ssh your_username@is-dev.czela.net
 
-## 🚀 Po nasazení
+# Najdete posledni zalohu
+ls -lt /data/is-dev-czela-net/developer-addons/ | grep czela_uisp_backup
 
-### Pokud vše funguje:
+# Obnovte zalohu
+sudo rm -rf /data/is-dev-czela-net/developer-addons/czela_uisp
+sudo cp -r /data/is-dev-czela-net/developer-addons/czela_uisp_backup_20250216_083000 \
+     /data/is-dev-czela-net/developer-addons/czela_uisp
 
-1. ✅ Devices jsou synchronizovány z UISP
-2. ✅ Sites jsou v databázi
-3. ✅ Cron jobs běží automaticky
-4. ✅ Můžete procházet data přes Python shell
-
-### Další kroky:
-
-1. **Implementovat views** (viz TODO.md)
-   - Pro zobrazení dat v UI
-   - Menu UISP → Devices, Sites, atd.
-
-2. **Implementovat wizards**
-   - Sync wizard (UI pro manuální sync)
-   - ČTÚ export wizard
-
-3. **Otestovat na production data**
-   - Ověřit MAC matching s network.inventory.device
-   - Zkontrolovat CTU classification
+# Restartujte
+sudo systemctl restart odoo
+```
 
 ---
 
-## 📞 Potřebujete pomoc?
+## Monitoring
 
-- **Views nejsou implementovány?** → Viz TODO.md pro seznam zbývajících souborů
-- **Chyby při instalaci?** → Zkontrolujte Odoo logy: `/var/log/odoo/odoo-server.log`
-- **Python závislosti chybí?** → Kontaktujte server administrátora
+### Kontrola stavu modulu
+
+```bash
+# SSH pripojeni
+ssh your_username@is-dev.czela.net
+
+# Status Odoo
+sudo systemctl status odoo
+
+# Live logy
+sudo tail -f /var/log/odoo/odoo-server.log | grep -i czela
+
+# Kontrola instalace modulu v DB
+sudo -u postgres psql
+\c your_database
+SELECT name, state FROM ir_module_module WHERE name = 'czela_uisp';
+\q
+```
 
 ---
 
-**Soubor k nahrání:** `czela_uisp.zip` (v root adresáři projektu)
+## 📞 Podpora
+
+**Deployment problemy:**
+- Zkontrolujte logy: `/var/log/odoo/odoo-server.log`
+- GitHub Issues: https://github.com/jan362/czela_odoo_uisp/issues
+
+**Server pristup:**
+- Kontaktujte CZELA IT tym pro SSH pristup
+
+---
+
+**Posledni aktualizace:** 2025-02-16
+**Cilovy server:** is-dev.czela.net
+**Odoo verze:** 18.0
+**Addons cesta:** `/data/is-dev-czela-net/developer-addons`

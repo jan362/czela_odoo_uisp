@@ -21,6 +21,9 @@ Musíte použít manuální instalaci přes file system.
 
 #### Metoda A: Linux/Unix
 
+> **💡 TIP:** Zkontrolujte `addons_path` v `/etc/odoo/odoo.conf`
+> Pro is-dev.czela.net použijte `/data/is-dev-czela-net/developer-addons`
+
 ```bash
 # 1. Rozbalte ZIP balíček
 unzip czela_uisp_odoo18_complete.zip

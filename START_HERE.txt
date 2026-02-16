@@ -17,10 +17,10 @@ Chybová hláška: "Můžete importovat pouze datové moduly (XML a statické pr
 1. Rozbalte tento ZIP balíček
 
 2. Zkopírujte modul do Odoo addons:
-   sudo cp -r czela_uisp /opt/odoo/custom/addons/
+   sudo cp -r czela_uisp /data/is-dev-czela-net/developer-addons/
 
 3. Nastavte oprávnění:
-   sudo chown -R odoo:odoo /opt/odoo/custom/addons/czela_uisp
+   sudo chown -R odoo:odoo /data/is-dev-czela-net/developer-addons/czela_uisp
 
 4. Instalujte závislosti:
    sudo pip3 install requests urllib3
