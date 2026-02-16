@@ -13,7 +13,6 @@ class ResPartner(models.Model):
         compute='_compute_uisp_device_count'
     )
 
-    @api.depends('id')
     def _compute_uisp_device_count(self):
         """Count UISP devices linked to this partner."""
         UispDevice = self.env['uisp.device']
