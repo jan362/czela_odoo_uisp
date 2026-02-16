@@ -41,6 +41,9 @@ Tento Odoo modul umožňuje:
 
 **Odoo verze:** 18.0+ (optimalizováno pro 18.0-20251021)
 
+**Odoo moduly:**
+- `network_inventory` - Povinný modul pro propojení UISP zařízení se zákazníky
+
 **Python závislosti:**
 ```bash
 pip install requests urllib3

@@ -38,6 +38,7 @@ Set UISP connection parameters in Settings > Technical > Parameters > System Par
     'depends': [
         'base',
         'contacts',
+        'network_inventory',
     ],
     'external_dependencies': {
         'python': ['requests', 'urllib3'],

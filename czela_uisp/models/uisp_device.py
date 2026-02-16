@@ -154,14 +154,9 @@ class UispDevice(models.Model):
             else:
                 device.partner_id = False
 
+    @api.depends('mac_address')
     def _compute_network_device(self):
         """Match UISP device to network.inventory.device by MAC."""
-        # Safety: Check if network.inventory module is installed
-        if 'network.inventory.device' not in self.env:
-            for device in self:
-                device.network_device_id = False
-            return
-
         NetworkDevice = self.env['network.inventory.device']
         for device in self:
             if device.mac_address:
